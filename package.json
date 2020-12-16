@@ -1,0 +1,23 @@
+{
+  "name": "image-meta-api",
+  "version": "0.0.0",
+  "private": true,
+  "scripts": {
+    "lint": "eslint .",
+    "test": "jest",
+    "test:ci": "jest",
+    "serve": "node serve.js"
+  },
+  "dependencies": {
+    "cors": "^2.8.5",
+    "debug": "~2.6.9",
+    "exifreader": "^3.12.6",
+    "express": "~4.16.1",
+    "http-errors": "~1.6.3",
+    "node-fetch": "^2.6.1"
+  },
+  "devDependencies": {
+    "eslint": "^7.15.0",
+    "jest": "^26.6.3"
+  }
+}
