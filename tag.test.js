@@ -12,16 +12,16 @@ describe('tagging', () => {
         title: 'some_title',
         description: 'some_description',
         datetime: 'some_datetime',
-        height: 'some_height',
-        width: 'some_width',
+        height: 100,
+        width: 200,
         focalLength: 'some_focallength',
         exposure: 'some_shutterspeed',
-        aperture: 'some_aperture',
-        iso: 'some_iso',
-        latitudeRef: 'some_latref',
-        latitude: 'some_lat',
-        longitudeRef: 'some_longref',
-        longitude: 'some_long'
+        aperture: '5.60',
+        iso: 100,
+        latitudeRef: 'N',
+        latitude: 44.55567313666667,
+        longitudeRef: 'W',
+        longitude: 72.78534460833333
     });
 
     expect(fetch.mock.calls[0][0]).toBe('https://images.ctfassets.net/some-images-api-path');

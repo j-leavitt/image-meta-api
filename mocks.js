@@ -20,12 +20,12 @@ const ExifReader = {
         description: 'some_datetime'
     },
     'Image Height': {
-        value: {},
-        description: 'some_height'
+        value: 100,
+        description: '100px'
     },
     'Image Width': {
-        value: {},
-        description: 'some_width'
+        value: 200,
+        description: '200px'
     },
     FocalLength: {
         value: {},
@@ -37,27 +37,31 @@ const ExifReader = {
     },
     ApertureValue: {
         value: {},
-        description: 'some_aperture'
+        description: '5.60'
     },
     ISOSpeedRatings: {
         value: {},
-        description: 'some_iso'
+        description: 100
     },
     GPSLatitudeRef: {
-        value: {},
+        value: [
+            'N'
+        ],
         description: 'some_latref'
     },
     GPSLatitude: {
         value: {},
-        description: 'some_lat'
+        description: 44.55567313666667
     },
     GPSLongitudeRef: {
-        value: {},
+        value: [
+            'W'
+        ],
         description: 'some_longref'
     },
     GPSLongitude: {
         value: {},
-        description: 'some_long'
+        description: 72.78534460833333
     }
   })
 };

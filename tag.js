@@ -1,22 +1,8 @@
 'use strict';
 
-const IMAGES_BASE = 'https://images.ctfassets.net';
+const {SUPPORTED_TAGS_MAP, getTag} = require('./tagread');
 
-const SUPPORTED_TAGS_MAP = {
-    'title': 'title',
-    'description': 'description',
-    'DateTimeOriginal': 'datetime',
-    'Image Height': 'height',
-    'Image Width': 'width',
-    'FocalLength': 'focalLength',
-    'ShutterSpeedValue': 'exposure',
-    'ApertureValue': 'aperture',
-    'ISOSpeedRatings': 'iso',
-    'GPSLatitudeRef': 'latitudeRef',
-    'GPSLatitude': 'latitude',
-    'GPSLongitudeRef': 'longitudeRef',
-    'GPSLongitude': 'longitude'
-};
+const IMAGES_BASE = 'https://images.ctfassets.net';
 
 const fetchImage = async (imageUrl, fetch) => {
     const res = await fetch(
@@ -41,9 +27,10 @@ module.exports = async (path, { fetch, ExifReader }) => {
     const tags = ExifReader.load(imageData);
 
     const resTags = {};
-    for (const [fromTag, toTag] of Object.entries(SUPPORTED_TAGS_MAP)) {
+    for (const fromTag of Object.keys(SUPPORTED_TAGS_MAP)) {
         if (fromTag in tags) {
-            resTags[toTag] = tags[fromTag].description;
+            const { key, value } = getTag(tags, fromTag);
+            resTags[key] = value;
         }
     }
 
