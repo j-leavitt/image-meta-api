@@ -14,33 +14,36 @@ describe('tagging', () => {
         datetime: 'some_datetime',
         height: 100,
         width: 200,
-        focalLength: 'some_focallength',
-        exposure: 'some_shutterspeed',
-        aperture: '5.60',
-        iso: 100,
-        latitudeRef: 'N',
-        latitude: 44.55567313666667,
-        longitudeRef: 'W',
-        longitude: 72.78534460833333
+        location: {
+          lat: 44.25,
+          lon: -115.25
+        }
     });
 
     expect(fetch.mock.calls[0][0]).toBe('https://images.ctfassets.net/some-images-api-path');
 
-    expect(ExifReader.load).toBeCalledWith('SOME_BUFF');
+    expect(ExifReader.load).toBeCalledWith('SOME_BUFF', {expanded: true});
   });
 
-  test('only includes tags that are present in image metadata', async () => {
+  test('returns null values for fields that cannot be resolved from image metadata', async () => {
     ExifReader.load.mockReturnValueOnce({
-        title: {
+      iptc:{  
+        'Object Name': {
             value: {},
             description: 'some_title'
         }
+      }
     });
 
     const tags = await tag('/some-images-api-path', { fetch, ExifReader });
 
     expect(tags).toEqual({
         title: 'some_title',
+        description: null,
+        datetime: null,
+        height: null,
+        width: null,
+        location: null
     });
   });
 

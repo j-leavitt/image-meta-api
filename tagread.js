@@ -1,52 +1,51 @@
 'use strict';
 
-const defaultTransform = (tags, key) => tags[key].description;
-const valueTransform = (tags, key) => tags[key].value;
-const gpsRefTransform = (tags, key) => tags[key].value[0];
+const get = require('lodash/get');
 
-const SUPPORTED_TAGS_MAP = {
-    'title': 'title',
-    'description': 'description',
-    'DateTimeOriginal': 'datetime',
-    'Image Height': {
-        label: 'height',
+const defaultTransform = (tags, source) => get(tags, `${source}.description`, null);
+const valueTransform = (tags, source) => get(tags, `${source}.value`, null);
+
+const TAG_MAP = {
+    title: {
+        source: 'iptc.Object Name',
+        transform: defaultTransform
+    },
+    description: {
+        source: 'iptc.Caption/Abstract',
+        transform: defaultTransform
+    },
+    datetime: {
+        source: 'exif.DateTimeOriginal',
+        transform: defaultTransform
+    },
+    height: {
+        source: 'file.Image Height',
         transform: valueTransform
     },
-    'Image Width': {
-        label: 'width',
+    width: {
+        source: 'file.Image Width',
         transform: valueTransform
     },
-    'FocalLength': 'focalLength',
-    'ShutterSpeedValue': 'exposure',
-    'ApertureValue': 'aperture',
-    'ISOSpeedRatings': 'iso',
-    'GPSLatitudeRef': {
-        label: 'latitudeRef',
-        transform: gpsRefTransform
-    },
-    'GPSLatitude': 'latitude',
-    'GPSLongitudeRef': {
-        label: 'longitudeRef',
-        transform: gpsRefTransform
-    },
-    'GPSLongitude': 'longitude'
+    location: {
+        source: 'gps',
+        transform: (tags, source) => {
+            const lat = get(tags, `${source}.Latitude`);
+            const lon = get(tags, `${source}.Longitude`);
+            if (lat && lon) {
+                return { lat, lon };
+            } else {
+                return null;
+            }
+        }
+    }
 };
 
-const getTag = (tags, fromTag) => {
-    const newTag = {};
-
-    if (typeof(SUPPORTED_TAGS_MAP[fromTag]) === 'string') {
-        newTag.key = SUPPORTED_TAGS_MAP[fromTag];
-        newTag.value = defaultTransform(tags, fromTag);
-    } else {
-        newTag.key = SUPPORTED_TAGS_MAP[fromTag].label;
-        newTag.value = SUPPORTED_TAGS_MAP[fromTag].transform(tags, fromTag);
-    }
-
-    return newTag;
+const getTagValue = (tags, key) => {
+    const { source, transform } = TAG_MAP[key];
+    return transform(tags, source);
 };
 
 module.exports = {
-    SUPPORTED_TAGS_MAP,
-    getTag
+    TAG_MAP,
+    getTagValue
 };

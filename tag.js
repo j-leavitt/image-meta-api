@@ -1,6 +1,6 @@
 'use strict';
 
-const {SUPPORTED_TAGS_MAP, getTag} = require('./tagread');
+const {TAG_MAP, getTagValue} = require('./tagread');
 
 const IMAGES_BASE = 'https://images.ctfassets.net';
 
@@ -24,14 +24,11 @@ const fetchImage = async (imageUrl, fetch) => {
 
 module.exports = async (path, { fetch, ExifReader }) => {
     const imageData = await fetchImage(IMAGES_BASE + path, fetch);
-    const tags = ExifReader.load(imageData);
+    const tags = ExifReader.load(imageData, {expanded: true});
 
     const resTags = {};
-    for (const fromTag of Object.keys(SUPPORTED_TAGS_MAP)) {
-        if (fromTag in tags) {
-            const { key, value } = getTag(tags, fromTag);
-            resTags[key] = value;
-        }
+    for (const key of Object.keys(TAG_MAP)) {
+        resTags[key] = getTagValue(tags, key);
     }
 
     return resTags;
