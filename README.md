@@ -1,3 +1,5 @@
+# image-meta-api
+
 A simple Express backend to serve image metadata to the [corresponding Contentful app frontend](https://github.com/j-leavitt/image-meta-frontend).
 
 This project is modification of the [Contentful ai-image-tagging](https://github.com/contentful/apps/tree/master/apps/ai-image-tagging) lambda service backend to support image metadata extraction.
