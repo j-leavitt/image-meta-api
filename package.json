@@ -14,6 +14,7 @@
     "exifreader": "^3.12.6",
     "express": "~4.16.1",
     "http-errors": "~1.6.3",
+    "lodash": "^4.17.20",
     "node-fetch": "^2.6.1"
   },
   "devDependencies": {
